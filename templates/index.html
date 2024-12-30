@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table Query App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+    <div class="container">
+        <h1>Table Query App</h1>
+
+        <form method="post">
+            <!-- Dropdown Section -->
+            <div class="dropdown-section">
+                <!-- Model Dropdown -->
+                <div>
+                    <label for="model">Model:</label>
+                    <select id="model" name="model" required>
+                        <option value="llama" {% if model == "llama" %}selected{% endif %}>Llama</option>
+                        <option value="mistral" {% if model == "mistral" %}selected{% endif %}>Mistral</option>
+                    </select>
+                </div>
+
+                <!-- Dataset Dropdown -->
+                <div>
+                    <label for="dataset">Dataset:</label>
+                    <select id="dataset" name="dataset" required>
+                        <option value="fetaqa" {% if dataset == "fetaqa" %}selected{% endif %}>FetaQA</option>
+                        <option value="tabfact-simple" {% if dataset == "tabfact-simple" %}selected{% endif %}>TabFact-Simple</option>
+                        <option value="tabfact-complex" {% if dataset == "tabfact-complex" %}selected{% endif %}>TabFact-Complex</option>
+                        <option value="wikitablaqa" {% if dataset == "wikitablaqa" %}selected{% endif %}>WikiTableQA</option>
+                    </select>
+                </div>
+
+                <!-- Prompt Method Dropdown -->
+                <div>
+                    <label for="prompting">Prompt Method:</label>
+                    <select id="prompting" name="prompting" required>
+                        <option value="direct" {% if prompting == "direct" %}selected{% endif %}>Direct</option>
+                        <option value="cot" {% if prompting == "cot" %}selected{% endif %}>Chain of Thought (CoT)</option>
+                        <option value="self-consistency" {% if prompting == "self-consistency" %}selected{% endif %}>Self Consistency</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Input and Answer Section -->
+            <div class="input-answer-section">
+                <!-- Left Section -->
+                <div class="left-section">
+                    <label for="table">Enter Table (as text):</label>
+                    <textarea id="table" name="table" placeholder="| Column1 | Column2 |\n|---------|---------|\n| Value1  | Value2  |" required>{{ table }}</textarea>
+
+                    <label for="query">Enter Query:</label>
+                    <input type="text" id="query" name="query" placeholder="Your query here" required value="{{ query }}">
+
+                    <button type="submit">Submit</button>
+                </div>
+
+                <!-- Right Section -->
+                <div class="right-section">
+                    {% if answer %}
+                    <h2>Generated Answer:</h2>
+                    <p>{{ answer }}</p>
+                    {% else %}
+                    <h2>Generated Answer:</h2>
+                    <p>No answer yet. Submit a query to see the result.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
